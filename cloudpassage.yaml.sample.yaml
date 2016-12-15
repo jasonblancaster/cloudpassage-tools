@@ -1,0 +1,5 @@
+defaults:
+    key_id: 'your halo key id'
+    secret_key: 'your halo secret key'
+    api_hostname: "api.cloudpassage.com"
+    api_port: 443
