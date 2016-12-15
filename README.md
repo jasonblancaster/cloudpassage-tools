@@ -2,6 +2,7 @@
 Python tools to interact with Halo API
 
 Install CloudPassage SDK to use these scripts. 'pip install cloudpassage'
+    https://github.com/cloudpassage/cloudpassage-halo-python-sdk
 Then add your Halo API key to the cloudpassage.yaml file.
 
 defaults:
