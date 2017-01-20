@@ -18,6 +18,27 @@ def create_api_session(session):
     return session
 
 
+def convert_to_pure_ascii(string_val):
+   """Converts a string to make sure it only contains valid
+   ASCII code values. If a string's length changes, then
+   this function detects this and reports uses the flag:
+   'length_changed' to reflect that it changed.
+   """
+   len_changed = False
+   len_original = 0
+   len_encoded = 0
+
+   if isinstance(string_val, unicode):
+       len_original = len(string_val)
+       string_val = string_val.encode("ascii", "ignore")
+       len_encoded = len(string_val)
+       if len_original != len_encoded:
+           len_changed = True
+   else:
+       string_val = str(string_val).encode("ascii", "ignore")
+
+   return (string_val) #len_changed
+
 def lastScan(session, serverID, serverHostname):
     scan = cloudpassage.Scan(session)
     serverScan = scan.last_scan_results(server_id=serverID, scan_type='sva')
@@ -60,7 +81,6 @@ def main():
             #print serv  # uncomment this if you want to see the full json data available to add more output
             serverID = serv["id"]
             serverHostname = serv["hostname"]
-            #scanDetails(session, serverID)
             details = lastScan(api_session, serverID, serverHostname)
 
             if details:
@@ -69,12 +89,11 @@ def main():
                 print("Server: %s \t Critical vulnerabilities: %s") \
                 % (serv["interfaces"][0]["ip_address"], details["critical_findings_count"])
                 findings = details["findings"]
-                #print findings
                 for vuln in findings:
                     if vuln["status"] == 'bad':
-
+                        package_name = convert_to_pure_ascii(vuln["package_name"])
                         f.write("\tVulnerable package: %s \t Package version: %s \n" \
-                        % (vuln["package_name"].encode('utf-8'), vuln["package_version"]))
+                        % (package_name, vuln["package_version"]))
                         cves = vuln["cve_entries"]
                         for cve in cves:
                             f.write("\t\tCVE: %s \t CVSS: %s \tRef: https://cve.mitre.org/cgi-bin/cvename.cgi?name=%s\n" \
