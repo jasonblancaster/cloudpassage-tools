@@ -93,7 +93,7 @@ def parse_fw_rules(api_session, fw_rules, dst_group, filename):
                 #print ("\t\t%s,%s:%s_%s,%s" % (src_group,dst_group,dst_protocol,dst_port,dst_group))
                 f.write("%s,%s:%s_%s,%s\n" % (src_group,dst_group,dst_protocol,dst_port,dst_group))
 
-    return (src_group, dst_protocol, dst_port)
+    #return (src_group, dst_protocol, dst_port)
 
 
 def main():
