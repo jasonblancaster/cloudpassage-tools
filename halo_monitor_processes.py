@@ -2,8 +2,7 @@
 # halo_quarantine_compromised_workload.py
 
 ''' This will monitor CloudPassage Halo for a new process on a worlkload. For each new process
-    It will get the hash of the binary and check VirusTotal. If VT reports it as malicious
-    it will use WFM to quarantine the workload and send an email.
+    It will get the hash of the binary and check VirusTotal.
 '''
 
 __author__ = 'Jason B. Lancaster'
