@@ -47,7 +47,11 @@ def listEvents(session, server_id, search_time):
 
 def scan_findings(api_session, scan_id, findings_id):
     scan = cloudpassage.Scan(api_session)
-    scan_finding = scan.findings(scan_id, findings_id)
+    try:
+        scan_finding = scan.findings(scan_id, findings_id)
+    except CloudPassageResourceExistence as e:
+        print('\CloudPassageResourceExistence occured:\n%s' %e)
+        scan_finding = {}
 
     return scan_finding
 
@@ -116,16 +120,20 @@ def main():
             event_name = event['name']
             scan_id = event['scan_id']
             findings_id = event['finding_id']
-            findings = scan_findings(api_session, scan_id, findings_id)['findings']
-            for finding in findings:
-                file_path = finding['file']
-                if 'meta' in finding['detail']:
-                    if 'mtime' in finding['detail']['meta']:
-                        mtime = convert_datetime(finding['detail']['meta']['mtime'])
+            try:
+                findings = scan_findings(api_session, scan_id, findings_id)['findings']
+                for finding in findings:
+                    file_path = finding['file']
+                    if 'meta' in finding['detail']:
+                        if 'mtime' in finding['detail']['meta']:
+                            mtime = convert_datetime(finding['detail']['meta']['mtime'])
+                        else:
+                            mtime = None
                     else:
                         mtime = None
-                else:
-                    mtime = None
+            except:
+                print "Error getting FIM finding."
+                break
             # Create event with detail, dedupe in the process
             if event['server_id'] not in fail_by_server:
                 fail_by_server[event['server_id']] = {file_path: {"server_hostname": server_hostname,
