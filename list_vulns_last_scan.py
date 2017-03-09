@@ -137,7 +137,7 @@ def main():
                     halo_sva_scan_time = datetime.strptime(\
                         details["analysis_completed_at"], \
                         '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M')
-                    print("#"*100)
+                    #print("#"*100)
                     print("Server: %s \t Critical vulnerabilities: %s") \
                     % (serv["interfaces"][0]["ip_address"], details["critical_findings_count"])
                     findings = details["findings"]
@@ -145,7 +145,7 @@ def main():
                         if vuln["status"] == 'bad':
                             package_name = convert_to_pure_ascii(vuln["package_name"])
                             package_ver = vuln["package_version"]
-                            print("{:40}{}".format(package_name, package_ver))
+                            #print("{:40}{}".format(package_name, package_ver))
                             cves = vuln["cve_entries"]
                             for cve in cves:
                                 cve_id = cve["cve_entry"]
