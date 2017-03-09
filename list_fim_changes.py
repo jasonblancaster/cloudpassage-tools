@@ -28,7 +28,7 @@ def create_api_session(session):
 
 
 def get_args(argv=None):
-    parser = argparse.ArgumentParser(description="Check CloudPassage Halo for CVE coverage.")
+    parser = argparse.ArgumentParser(description="Check CloudPassage Halo for FIM events.")
     parser.add_argument("-t", "--time", help="Enter number of days back to report on. Default: 1")
 
     return parser.parse_args(argv)
