@@ -40,6 +40,7 @@ def convert_to_pure_ascii(string_val):
 
    return (string_val) #len_changed
 
+
 def lastScan(session, serverID, serverHostname):
     scan = cloudpassage.Scan(session)
     serverScan = scan.last_scan_results(server_id=serverID, scan_type='sva')
@@ -60,8 +61,8 @@ def listServers(session):
 def get_args(argv=None):
     parser = argparse.ArgumentParser(description="Check CloudPassage Halo for \
         CVE coverage. By default will write report to csv.")
-    parser.add_argument("-c", "--csv", help="Write report to CSV")
-    parser.add_argument("-t", "--text", help="Write report to text file")
+    parser.add_argument("-c", "--csv", action='store_true', help="Write report to CSV")
+    parser.add_argument("-t", "--text", action='store_true', help="Write report to text file")
 
     return parser.parse_args(argv)
 
@@ -134,9 +135,9 @@ def main():
 
                 details = lastScan(api_session, serverID, serverHostname)
                 if details:
-                    halo_sva_scan_time = datetime.strptime(\
-                        details["analysis_completed_at"], \
-                        '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M')
+                    halo_sva_scan_time = datetime.strptime(details["analysis_completed_at"], \
+                    '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%Y-%m-%d %H:%M')\
+                    if details['analysis_completed_at'] else None
                     #print("#"*100)
                     print("Server: %s \t Critical vulnerabilities: %s") \
                     % (serv["interfaces"][0]["ip_address"], details["critical_findings_count"])
